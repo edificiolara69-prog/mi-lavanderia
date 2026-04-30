@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WashFlow - App</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reutilizo tus estilos pero aseguro que las pantallas se oculten/muestren */
+        :root { --primary: #1A6B5A; --bg: #F0F4F3; --surface: #FFFFFF; --text: #1C2B28; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
+        body { background: #CBD8D4; display: flex; justify-content: center; height: 100vh; }
+        
+        .phone-wrapper { 
+            width: 100%; max-width: 400px; height: 100%; background: var(--bg); 
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+
+        .screen { display: none; flex-direction: column; height: 100%; overflow-y: auto; padding-bottom: 80px; }
+        .screen.active { display: flex; }
+
+        /* Estilos rápidos para botones y navegación */
+        .btn-confirmar { 
+            background: var(--primary); color: white; border: none; padding: 15px; 
+            margin: 20px; border-radius: 15px; font-weight: bold; cursor: pointer;
+        }
+        
+        .bottom-nav { 
+            position: absolute; bottom: 0; width: 100%; background: white; 
+            display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #ddd;
+        }
+
+        /* Estilo para las tarjetas de máquinas */
+        .machine-card { background: white; margin: 10px 20px; padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        .header { background: var(--primary); color: white; padding: 30px 20px; border-radius: 0 0 30px 30px; }
+    </style>
+</head>
+<body>
+
+<div class="phone-wrapper">
+    
+    <!-- PANTALLA 1: INICIO -->
+    <div class="screen active" id="screen-home">
+        <div class="header">
+            <h1>WashFlow</h1>
+            <p>Reserva tu lavadora hoy</p>
+        </div>
+        <div style="padding: 20px;">
+            <h3>Estado actual</h3>
+            <div class="machine-card" onclick="goToScreen('screen-reservar')">
+                <strong>Lavadora #1</strong> - <span style="color: green;">Disponible</span>
+            </div>
+            <div class="machine-card" onclick="goToScreen('screen-reservar')">
+                <strong>Lavadora #2</strong> - <span style="color: red;">Ocupada</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA 2: RESERVAR -->
+    <div class="screen" id="screen-reservar">
+        <div style="padding: 20px;">
+            <button onclick="goToScreen('screen-home')" style="border:none; background:none; color: var(--primary); font-weight:bold;">< Volver</button>
+            <h2 style="margin-top:20px;">Elige tu horario</h2>
+            <div class="machine-card" onclick="seleccionarHora(this)">10:00 AM</div>
+            <div class="machine-card" onclick="seleccionarHora(this)">11:00 AM</div>
+            <div class="machine-card" onclick="seleccionarHora(this)">12:00 PM</div>
+            <button class="btn-confirmar" onclick="finalizar()">Confirmar Reserva</button>
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <div class="bottom-nav">
+        <div onclick="goToScreen('screen-home')">🏠 Inicio</div>
+        <div onclick="goToScreen('screen-reservar')">📅 Reservar</div>
+    </div>
+</div>
+
+<script>
+    // ESTA ES LA MAGIA QUE HACE QUE FUNCIONE
+    function goToScreen(screenId) {
+        // Oculta todas las pantallas
+        const screens = document.querySelectorAll('.screen');
+        screens.forEach(s => s.classList.remove('active'));
+        
+        // Muestra la pantalla seleccionada
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function seleccionarHora(elemento) {
+        // Quita el color de otros
+        document.querySelectorAll('.machine-card').forEach(c => c.style.border = "none");
+        // Marca el seleccionado
+        elemento.style.border = "2px solid #1A6B5A";
+        alert("Horario seleccionado");
+    }
+
+    function finalizar() {
+        alert("¡Listo! Tu lavadora ha sido reservada.");
+        goToScreen('screen-home');
+    }
+</script>
+
+</body>
+</html>
